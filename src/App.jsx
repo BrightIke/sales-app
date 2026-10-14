@@ -1,122 +1,99 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { lazy, Suspense, useEffect, useState } from 'react'
+import { AuthProvider, useAuth } from './AuthContext'
+import AuthPage from './pages/AuthPage'
+import Setup from './pages/Setup'
+import Join from './pages/Join'
+import ResetPassword from './pages/ResetPassword'
+import Layout from './components/Layout'
+import ErrorBoundary from './components/ErrorBoundary'
+import { reloadOnce } from './lib/reload'
+import { applyTheme, useThemeMode } from './lib/theme'
+import { Toaster } from 'sonner'
 
-function App() {
-  const [count, setCount] = useState(0)
+// Each page is downloaded only when someone opens it, so the app starts fast on slow connections
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const Sales = lazy(() => import('./pages/Sales'))
+const Customers = lazy(() => import('./pages/Customers'))
+const Items = lazy(() => import('./pages/Items'))
+const Stock = lazy(() => import('./pages/Stock'))
+const Money = lazy(() => import('./pages/Money'))
+const Analytics = lazy(() => import('./pages/Analytics'))
+const Settings = lazy(() => import('./pages/Settings'))
+const Team = lazy(() => import('./pages/Team'))
+
+function PageLoading() {
+  return <p className="py-10 text-center text-ink/65">Loading...</p>
+}
+
+function Shell() {
+  const [page, setPage] = useState('home')
+  const { hasModule, business, profile } = useAuth()
+
+  // Each business type gets its own accent colour
+  useEffect(() => {
+    applyTheme(business.business_type)
+  }, [business.business_type])
+
+  // If a module gets switched off while its page is open, fall back to Home
+  const blocked =
+    (page === 'stock' && !hasModule('inventory')) ||
+    (page === 'money' && !hasModule('money')) ||
+    (page === 'customers' && !hasModule('customers')) ||
+    (page === 'analytics' && !hasModule('analytics')) ||
+    (page === 'team' && profile?.role !== 'owner')
+  const current = blocked ? 'home' : page
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+    <Layout page={current} setPage={setPage}>
+      <Suspense fallback={<PageLoading />}>
+        {current === 'home' && <Dashboard go={setPage} />}
+        {current === 'sales' && <Sales />}
+        {current === 'customers' && <Customers />}
+        {current === 'items' && <Items />}
+        {current === 'stock' && <Stock />}
+        {current === 'money' && <Money />}
+        {current === 'analytics' && <Analytics />}
+        {current === 'settings' && <Settings />}
+        {current === 'team' && <Team />}
+      </Suspense>
+    </Layout>
   )
 }
 
-export default App
+function Gate() {
+  const { session, business, loading, recovery, invites } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-page text-ink">
+        Loading...
+      </div>
+    )
+  }
+  if (recovery) return <ResetPassword />
+  if (!session) return <AuthPage />
+  if (!business) return invites.length > 0 ? <Join /> : <Setup />
+
+  // key makes the whole app reload fresh data when you switch business
+  return <Shell key={business.id} />
+}
+
+// If a page file can't be fetched (usually because the app was just updated), reload once
+window.addEventListener('vite:preloadError', () => reloadOnce())
+
+export default function App() {
+  const { resolved } = useThemeMode()
+  return (
+    <ErrorBoundary>
+    <AuthProvider>
+      <Gate />
+      <Toaster
+        theme={resolved}
+        position="top-center"
+        mobileOffset={{ top: 'calc(env(safe-area-inset-top, 0px) + 8px)', left: 12, right: 12 }}
+        toastOptions={{ style: { borderRadius: '14px' } }}
+      />
+    </AuthProvider>
+    </ErrorBoundary>
+  )
+}

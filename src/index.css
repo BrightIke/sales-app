@@ -1,1 +1,247 @@
 @import "tailwindcss";
+@import "@fontsource-variable/bricolage-grotesque";
+@import "@fontsource-variable/plus-jakarta-sans";
+
+/* Dark mode is switched by a "dark" class on <html> (see src/lib/theme.js) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------
+   DESIGN TOKENS
+   Every colour in the app comes from here, so light mode, dark mode
+   and each business type's accent colour all stay consistent.
+   Use them as: bg-page, bg-surface, text-ink, border-line, bg-accent...
+------------------------------------------------------------------- */
+@theme inline {
+  --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque Variable', 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-fg: var(--brand-fg);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-fg: var(--accent-fg);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+
+  /* Motion curves: strong ease-out for UI, drawer curve for sheets */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+:root {
+  color-scheme: light;
+  --page: #f3f1ea;
+  --surface: #ffffff;
+  --surface-2: #f8f6f0;
+  --ink: #12241f;
+  --line: rgb(18 36 31 / 0.14);
+  --brand: #12241f;
+  --brand-hover: #1d3a31;
+  --brand-fg: #ffffff;
+  --danger: #b42318;
+  --success: #067647;
+  --chart-1: #12241f;
+  --chart-3: #5a8a77;
+  /* Darker versions of the accent for charts and focus rings, so they stay
+     visible (3:1) on white. Works for every business accent colour. */
+  --chart-accent: color-mix(in srgb, var(--accent) 70%, black);
+  --ring: color-mix(in srgb, var(--accent) 65%, black);
+
+  /* Accent colour: replaced per business type by src/lib/theme.js */
+  --accent: #e8a317;
+  --accent-hover: #f0b13a;
+  --accent-fg: #12241f;
+}
+
+:root.dark {
+  color-scheme: dark;
+  --page: #0c1411;
+  --surface: #141f1a;
+  --surface-2: #1a2822;
+  --ink: #e9f0eb;
+  --line: rgb(233 240 235 / 0.14);
+  --brand: #1b3329;
+  --brand-hover: #244236;
+  --brand-fg: #f2f7f4;
+  --danger: #f97066;
+  --success: #47cd89;
+  --chart-1: #8fd3b6;
+  --chart-3: #5e9c85;
+  --chart-accent: var(--accent);
+  --ring: var(--accent);
+}
+
+/* ------------------------------------------------------------------
+   BASE: typography + making it feel like an installed phone app
+------------------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent; /* no grey flash when tapping */
+    -webkit-text-size-adjust: 100%;
+    overscroll-behavior: none; /* stop pull-to-refresh hijacking scroll */
+  }
+
+  body {
+    background-color: var(--page);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+  }
+
+  /* Faster taps, and controls should not select their text on long-press */
+  button,
+  a,
+  [role='button'],
+  select,
+  label {
+    touch-action: manipulation;
+  }
+  button,
+  [role='button'] {
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  /* Visible keyboard focus on every control */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  /* Press feedback on touch and mouse. Named properties only, never "all". */
+  button {
+    transition:
+      transform 120ms var(--ease-out),
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease,
+      opacity 150ms ease;
+  }
+  button:not(:disabled):active {
+    transform: scale(0.97);
+  }
+}
+
+/* iOS zooms the page into any input under 16px, so phones get 16px */
+@media (pointer: coarse) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+  input:not([type='checkbox']):not([type='radio']):not([type='hidden']),
+  select {
+    min-height: 44px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   SHARED PIECES
+------------------------------------------------------------------- */
+@utility num {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+@layer components {
+  .card {
+    border-radius: 1rem;
+    border: 1px solid var(--line);
+    background-color: var(--surface);
+  }
+
+  .field {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid color-mix(in oklab, var(--ink) 55%, transparent);
+    background-color: var(--surface);
+    color: var(--ink);
+    padding: 0.625rem 0.875rem;
+    outline: none;
+    transition:
+      border-color 150ms ease,
+      box-shadow 150ms ease;
+  }
+  .field::placeholder {
+    color: color-mix(in oklab, var(--ink) 65%, transparent);
+  }
+  .field:focus {
+    border-color: var(--ring);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 30%, transparent);
+  }
+  .field:focus-visible {
+    outline: none;
+  }
+
+  /* Underlined text buttons: bigger invisible tap area on touch screens */
+  @media (pointer: coarse) {
+    button.underline {
+      padding: 0.75rem 0.5rem;
+      margin: -0.75rem -0.5rem;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------
+   MOTION: only for things seen occasionally (receipts, sheets, toasts).
+   Tab switches and button taps stay instant.
+------------------------------------------------------------------- */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+.fade-in {
+  animation: fade-in 150ms ease-out;
+}
+.pop-in {
+  animation: pop-in 200ms var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pop-in { animation: fade-in 150ms ease; }
+  button:not(:disabled):active { transform: none; }
+}
+
+[data-sonner-toaster] {
+  font-family: var(--font-sans);
+}
+
+/* ------------------------------------------------------------------
+   PRINTING: show ONLY the receipt, sized for a small receipt printer,
+   in plain black on white even when the app is in dark mode.
+------------------------------------------------------------------- */
+@media print {
+  @page { margin: 4mm; }
+  body * { visibility: hidden; }
+  .print-area,
+  .print-area * {
+    visibility: visible;
+    color: #000 !important;
+    border-color: #000 !important;
+    background: #fff !important;
+  }
+  .print-area { position: fixed; left: 0; top: 0; width: 72mm; }
+}
