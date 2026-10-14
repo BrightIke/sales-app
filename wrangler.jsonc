@@ -1,0 +1,10 @@
+{
+  // The name must match the project name you choose in the Cloudflare dashboard
+  "name": "tally",
+  "compatibility_date": "2026-10-14",
+  "assets": {
+    "directory": "./dist/",
+    // Always serve the app, so a refresh or bookmark never shows a 404
+    "not_found_handling": "single-page-application"
+  }
+}
