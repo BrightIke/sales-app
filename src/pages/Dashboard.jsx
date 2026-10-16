@@ -165,7 +165,7 @@ export default function Dashboard({ go }) {
           <div className="grid gap-3 sm:grid-cols-2">
             {attention.map(({ key, icon: Icon, title, body, action, label }) => (
               <div key={key} className="card flex items-start gap-3 p-4">
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent/25">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-warning/20">
                   <Icon size={20} />
                 </span>
                 <div className="min-w-0 flex-1">

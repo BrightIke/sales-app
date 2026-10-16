@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { APP_NAME } from '../lib/brand'
+import Logo from '../components/Logo'
 import { Segmented } from '../components/ui'
 
 // A decorative receipt that shows what the app does at a glance
@@ -96,9 +97,7 @@ export default function AuthPage() {
       {/* Brand side (desktop only) */}
       <div className="relative hidden flex-col justify-between overflow-hidden bg-brand p-12 text-brand-fg lg:flex">
         <div className="flex items-center gap-2.5">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-accent font-display text-xl font-bold text-accent-fg">
-            {APP_NAME[0]}
-          </span>
+          <Logo size={34} className="text-brand-fg" />
           <span className="font-display text-2xl font-semibold tracking-tight">{APP_NAME}</span>
         </div>
 
@@ -120,9 +119,7 @@ export default function AuthPage() {
       <div className="flex items-center justify-center px-5 py-10 pt-[calc(2.5rem+env(safe-area-inset-top,0px))]">
         <div className="w-full max-w-sm">
           <div className="mb-8 flex items-center gap-2.5 lg:hidden">
-            <span className="grid h-9 w-9 place-items-center rounded-lg bg-accent font-display text-xl font-bold text-accent-fg">
-              {APP_NAME[0]}
-            </span>
+            <Logo size={34} className="text-ink" />
             <span className="font-display text-2xl font-semibold tracking-tight">{APP_NAME}</span>
           </div>
 

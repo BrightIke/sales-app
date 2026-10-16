@@ -266,7 +266,7 @@ export default function Items() {
                         <>
                           {Number(i.stock_qty)}
                           {low && (
-                            <span className="ml-2 rounded bg-accent/30 px-1.5 py-0.5 text-xs font-medium">
+                            <span className="ml-2 rounded bg-warning/25 px-1.5 py-0.5 text-xs font-medium">
                               Low
                             </span>
                           )}

@@ -1,22 +1,15 @@
 import { useEffect, useState } from 'react'
 
-// ---------- Accent colour per business type ----------
-const accents = {
-  retail: ['#E8A317', '#F0B13A'], // amber
-  restaurant: ['#F08A5D', '#F59A72'], // coral
-  cyber_cafe: ['#4FD1C5', '#6BDCD2'], // teal
-  other: ['#A78BFA', '#B9A1FB'], // violet
-}
+// ---------- Blue shade per business type ----------
+// The actual colours live in src/index.css under [data-biz='...'].
+const KNOWN = ['retail', 'restaurant', 'cyber_cafe', 'other']
 
 export function applyTheme(type) {
-  const [accent, hover] = accents[type] ?? accents.other
-  const style = document.documentElement.style
-  style.setProperty('--accent', accent)
-  style.setProperty('--accent-hover', hover)
+  document.documentElement.dataset.biz = KNOWN.includes(type) ? type : 'other'
 }
 
 // ---------- Light / dark / follow-the-phone ----------
-const KEY = 'tally-theme'
+const KEY = 'tilly-theme'
 
 export function getMode() {
   try {
@@ -40,7 +33,7 @@ export function applyMode(mode = getMode()) {
   // The phone's status bar takes the colour of the top bar
   document
     .getElementById('theme-color')
-    ?.setAttribute('content', resolved === 'dark' ? '#141F1A' : '#FFFFFF')
+    ?.setAttribute('content', resolved === 'dark' ? '#12171F' : '#FFFFFF')
 }
 
 export function setMode(mode) {

@@ -42,6 +42,7 @@ export function EmptyState({ icon: Icon, title, children, action }) {
 const badgeTones = {
   neutral: 'bg-ink/10 text-ink',
   accent: 'bg-accent/25 text-ink',
+  warning: 'bg-warning/20 text-ink',
   danger: 'bg-danger/15 text-danger',
   success: 'bg-success/15 text-success',
 }

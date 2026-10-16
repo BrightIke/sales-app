@@ -280,7 +280,7 @@ export default function Sales() {
                       <span className="mt-0.5 flex items-center gap-1.5 text-xs text-ink/65">
                         <span
                           className={`h-1.5 w-1.5 rounded-full ${
-                            out ? 'bg-danger' : lowStock ? 'bg-accent' : i.track_stock ? 'bg-success' : 'bg-ink/30'
+                            out ? 'bg-danger' : lowStock ? 'bg-warning' : i.track_stock ? 'bg-success' : 'bg-ink/30'
                           }`}
                         />
                         {out

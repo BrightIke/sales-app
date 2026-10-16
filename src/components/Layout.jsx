@@ -19,6 +19,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '../AuthContext'
 import { APP_NAME } from '../lib/brand'
+import Logo from './Logo'
 import { setMode, useThemeMode } from '../lib/theme'
 
 const nav = [
@@ -124,9 +125,7 @@ export default function Layout({ page, setPage, children }) {
       {/* ---------- Desktop sidebar ---------- */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col bg-brand p-4 text-brand-fg md:flex">
         <div className="mb-6 flex items-center gap-2.5 px-2">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-accent font-display text-lg font-bold text-accent-fg">
-            {APP_NAME[0]}
-          </span>
+          <Logo size={30} className="text-brand-fg" />
           <span className="font-display text-xl font-semibold tracking-tight">{APP_NAME}</span>
         </div>
 

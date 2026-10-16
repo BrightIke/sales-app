@@ -178,7 +178,7 @@ export default function Stock() {
                     <td className="px-4 py-3">{Number(i.reorder_level)}</td>
                     <td className="px-4 py-3">
                       {s === 'out' && <span className="rounded bg-danger/15 px-1.5 py-0.5 text-xs font-medium text-danger">Out</span>}
-                      {s === 'low' && <span className="rounded bg-accent/30 px-1.5 py-0.5 text-xs font-medium">Low</span>}
+                      {s === 'low' && <span className="rounded bg-warning/25 px-1.5 py-0.5 text-xs font-medium">Low</span>}
                       {s === 'ok' && <span className="text-ink/65">OK</span>}
                     </td>
                     <td className="whitespace-nowrap px-4 py-3 text-right">

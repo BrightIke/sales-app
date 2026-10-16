@@ -1,6 +1,6 @@
 {
-  // The name must match the project name you choose in the Cloudflare dashboard
-  "name": "tally",
+  // Must match the project name in your Cloudflare dashboard (yours is sales-app)
+  "name": "sales-app",
   "compatibility_date": "2026-10-14",
   "assets": {
     "directory": "./dist/",

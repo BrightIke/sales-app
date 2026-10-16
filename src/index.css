@@ -28,6 +28,7 @@
   --color-accent-fg: var(--accent-fg);
   --color-danger: var(--danger);
   --color-success: var(--success);
+  --color-warning: var(--warning);
 
   /* Motion curves: strong ease-out for UI, drawer curve for sheets */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -37,46 +38,56 @@
 
 :root {
   color-scheme: light;
-  --page: #f3f1ea;
+  --page: #eff0f3;
   --surface: #ffffff;
-  --surface-2: #f8f6f0;
-  --ink: #12241f;
-  --line: rgb(18 36 31 / 0.14);
-  --brand: #12241f;
-  --brand-hover: #1d3a31;
+  --surface-2: #f5f6f8;
+  --ink: #0b1220;
+  --line: rgb(11 18 32 / 0.14);
+  --brand: #0a0e14; /* the black of the sidebar and hero cards */
+  --brand-hover: #1a212c;
   --brand-fg: #ffffff;
   --danger: #b42318;
   --success: #067647;
-  --chart-1: #12241f;
-  --chart-3: #5a8a77;
-  /* Darker versions of the accent for charts and focus rings, so they stay
-     visible (3:1) on white. Works for every business accent colour. */
-  --chart-accent: color-mix(in srgb, var(--accent) 70%, black);
-  --ring: color-mix(in srgb, var(--accent) 65%, black);
+  --warning: #b45309; /* low stock, things to watch */
+  --chart-1: #0a0e14;
+  --chart-3: #64748b;
 
-  /* Accent colour: replaced per business type by src/lib/theme.js */
-  --accent: #e8a317;
-  --accent-hover: #f0b13a;
-  --accent-fg: #12241f;
-}
-
-:root.dark {
-  color-scheme: dark;
-  --page: #0c1411;
-  --surface: #141f1a;
-  --surface-2: #1a2822;
-  --ink: #e9f0eb;
-  --line: rgb(233 240 235 / 0.14);
-  --brand: #1b3329;
-  --brand-hover: #244236;
-  --brand-fg: #f2f7f4;
-  --danger: #f97066;
-  --success: #47cd89;
-  --chart-1: #8fd3b6;
-  --chart-3: #5e9c85;
+  /* Accent blue. Each business type gets its own shade of blue (see below).
+     Text on the accent is white in light mode. */
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-fg: #ffffff;
   --chart-accent: var(--accent);
   --ring: var(--accent);
 }
+
+/* One shade of blue per business type, set by src/lib/theme.js */
+:root[data-biz='restaurant'] { --accent: #0369a1; --accent-hover: #075985; }
+:root[data-biz='cyber_cafe'] { --accent: #3b5bdb; --accent-hover: #2f4ac0; }
+:root[data-biz='other'] { --accent: #64748b; --accent-hover: #526077; }
+
+:root.dark {
+  color-scheme: dark;
+  --page: #090c11;
+  --surface: #12171f;
+  --surface-2: #19202a;
+  --ink: #e8ecf2;
+  --line: rgb(232 236 242 / 0.14);
+  --brand: #1b2740; /* deep navy-gray for the sidebar and hero cards */
+  --brand-hover: #243252;
+  --brand-fg: #f2f5fa;
+  --danger: #f97066;
+  --success: #47cd89;
+  --warning: #fbbf24;
+  --chart-1: #cbd5e1;
+  --chart-3: #94a3b8;
+  --accent: #6ba0ff;
+  --accent-hover: #8db6ff;
+  --accent-fg: #0a0e14; /* dark text on the lighter blue */
+}
+:root.dark[data-biz='restaurant'] { --accent: #38bdf8; --accent-hover: #7dd3fc; }
+:root.dark[data-biz='cyber_cafe'] { --accent: #8b9bff; --accent-hover: #a5b1ff; }
+:root.dark[data-biz='other'] { --accent: #94a3b8; --accent-hover: #cbd5e1; }
 
 /* ------------------------------------------------------------------
    BASE: typography + making it feel like an installed phone app
