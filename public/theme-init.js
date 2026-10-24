@@ -1,6 +1,6 @@
 (function () {
   try {
-    var mode = localStorage.getItem('tilly-theme') || 'system'
+    var mode = localStorage.getItem('akanti-theme') || 'system'
     var dark =
       mode === 'dark' ||
       (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { AuthProvider, useAuth } from './AuthContext'
 import AuthPage from './pages/AuthPage'
 import Setup from './pages/Setup'
@@ -7,7 +7,7 @@ import ResetPassword from './pages/ResetPassword'
 import Layout from './components/Layout'
 import ErrorBoundary from './components/ErrorBoundary'
 import { reloadOnce } from './lib/reload'
-import { applyTheme, useThemeMode } from './lib/theme'
+import { useThemeMode } from './lib/theme'
 import { Toaster } from 'sonner'
 
 // Each page is downloaded only when someone opens it, so the app starts fast on slow connections
@@ -16,6 +16,7 @@ const Sales = lazy(() => import('./pages/Sales'))
 const Customers = lazy(() => import('./pages/Customers'))
 const Items = lazy(() => import('./pages/Items'))
 const Stock = lazy(() => import('./pages/Stock'))
+const Materials = lazy(() => import('./pages/Materials'))
 const Money = lazy(() => import('./pages/Money'))
 const Analytics = lazy(() => import('./pages/Analytics'))
 const Settings = lazy(() => import('./pages/Settings'))
@@ -27,17 +28,13 @@ function PageLoading() {
 
 function Shell() {
   const [page, setPage] = useState('home')
-  const { hasModule, business, profile } = useAuth()
-
-  // Each business type gets its own accent colour
-  useEffect(() => {
-    applyTheme(business.business_type)
-  }, [business.business_type])
+  const { hasModule, profile } = useAuth()
 
   // If a module gets switched off while its page is open, fall back to Home
   const blocked =
     (page === 'stock' && !hasModule('inventory')) ||
     (page === 'money' && !hasModule('money')) ||
+    (page === 'materials' && !hasModule('costing')) ||
     (page === 'customers' && !hasModule('customers')) ||
     (page === 'analytics' && !hasModule('analytics')) ||
     (page === 'team' && profile?.role !== 'owner')
@@ -49,8 +46,9 @@ function Shell() {
         {current === 'home' && <Dashboard go={setPage} />}
         {current === 'sales' && <Sales />}
         {current === 'customers' && <Customers />}
-        {current === 'items' && <Items />}
+        {current === 'items' && <Items go={setPage} />}
         {current === 'stock' && <Stock />}
+        {current === 'materials' && <Materials />}
         {current === 'money' && <Money />}
         {current === 'analytics' && <Analytics />}
         {current === 'settings' && <Settings />}

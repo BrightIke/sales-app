@@ -1,7 +1,7 @@
 // After you publish an update, a phone that still has the OLD app open can
 // fail to load a page that was renamed. Reloading once fixes it. The flag
 // stops this from ever looping.
-const FLAG = 'tilly-reloaded'
+const FLAG = 'akanti-reloaded'
 
 export function reloadOnce(reload = () => window.location.reload()) {
   try {

@@ -5,6 +5,7 @@ import {
   Users,
   Tag,
   Boxes,
+  Layers,
   Wallet,
   BarChart3,
   UserCog,
@@ -28,6 +29,7 @@ const nav = [
   { id: 'customers', label: 'Customers', icon: Users, module: 'customers', group: 'Daily' },
   { id: 'items', label: 'Items', icon: Tag, group: 'Daily' },
   { id: 'stock', label: 'Stock', icon: Boxes, module: 'inventory', managerOnly: true, group: 'Back office' },
+  { id: 'materials', label: 'Materials', icon: Layers, module: 'costing', managerOnly: true, group: 'Back office' },
   { id: 'money', label: 'Money', icon: Wallet, module: 'money', managerOnly: true, group: 'Back office' },
   { id: 'analytics', label: 'Analytics', icon: BarChart3, module: 'analytics', managerOnly: true, group: 'Back office' },
   { id: 'team', label: 'Team', icon: UserCog, ownerOnly: true, group: 'Admin' },
@@ -48,7 +50,11 @@ function Switcher({ dark, onAdd }) {
           dark ? 'bg-white/10 hover:bg-white/15' : 'hover:bg-ink/5'
         }`}
       >
-        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent font-display text-sm font-bold text-accent-fg">
+        <span
+          className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg font-display text-sm font-bold ${
+            dark ? 'bg-accent-bright text-brand' : 'bg-accent text-accent-fg'
+          }`}
+        >
           {business.name.slice(0, 2).toUpperCase()}
         </span>
         <span className="min-w-0 flex-1">
@@ -125,7 +131,7 @@ export default function Layout({ page, setPage, children }) {
       {/* ---------- Desktop sidebar ---------- */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col bg-brand p-4 text-brand-fg md:flex">
         <div className="mb-6 flex items-center gap-2.5 px-2">
-          <Logo size={30} className="text-brand-fg" />
+          <Logo size={30} onDark className="text-brand-fg" />
           <span className="font-display text-xl font-semibold tracking-tight">{APP_NAME}</span>
         </div>
 
@@ -145,7 +151,7 @@ export default function Layout({ page, setPage, children }) {
                     aria-current={page === id ? 'page' : undefined}
                     className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium ${
                       page === id
-                        ? 'bg-white/10 text-brand-fg shadow-[inset_3px_0_0_var(--accent)]'
+                        ? 'bg-white/10 text-brand-fg shadow-[inset_3px_0_0_var(--accent-bright)]'
                         : 'text-brand-fg/65 hover:bg-white/5 hover:text-brand-fg'
                     }`}
                   >

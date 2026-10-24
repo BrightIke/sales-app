@@ -11,6 +11,7 @@ import { Field } from '../components/ui'
 const moduleList = [
   { id: 'inventory', name: 'Stock management', desc: 'Restock, record waste, correct counts and get low-stock warnings.' },
   { id: 'money', name: 'Expenses and profit', desc: 'Track rent, power and salaries, and see your true net profit.' },
+  { id: 'costing', name: 'Costs and materials', desc: 'Work out what each item really costs you: materials, packaging, equipment wear.' },
   { id: 'customers', name: 'Customers and debt', desc: 'Customer list, purchase history and who owes you.' },
   { id: 'analytics', name: 'Analytics', desc: 'Best sellers, peak hours and plain-language insights.' },
 ]

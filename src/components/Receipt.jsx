@@ -38,7 +38,7 @@ export default function Receipt({ receipt: r, onClose }) {
     <div className="fade-in fixed inset-0 z-[60] flex items-end justify-center bg-black/50 p-4 sm:items-center">
       <div className="pop-in max-h-full w-full max-w-sm overflow-y-auto rounded-2xl bg-surface shadow-2xl">
         <div className="flex items-center gap-2 rounded-t-2xl bg-brand px-5 py-3 font-medium text-white">
-          <Check size={18} className="text-accent" /> Sale recorded
+          <Check size={18} className="text-accent-bright" /> Sale recorded
         </div>
 
         <div className="print-area p-5 text-sm">

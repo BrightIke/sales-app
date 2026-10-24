@@ -1,7 +1,7 @@
 {
-  "name": "Tilly",
-  "short_name": "Tilly",
-  "description": "Sales, stock, customers and profit for your business.",
+  "name": "Akanti",
+  "short_name": "Akanti",
+  "description": "Every number tells your story. Sales, stock, customers and profit for your business.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

@@ -1,45 +1,10 @@
 import { useState } from 'react'
 import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
-import { APP_NAME } from '../lib/brand'
+import { APP_NAME, TAGLINE } from '../lib/brand'
 import Logo from '../components/Logo'
+import GeoBand from '../components/GeoBand'
 import { Segmented } from '../components/ui'
-
-// A decorative receipt that shows what the app does at a glance
-function ReceiptArt() {
-  const rows = [
-    ['2 x Bottled water', '1,000'],
-    ['1 x Jollof rice', '2,500'],
-    ['1 hr Browsing', '500'],
-    ['3 x Printing', '150'],
-  ]
-  return (
-    <div
-      aria-hidden="true"
-      className="w-72 rotate-[-3deg] rounded-2xl bg-surface p-6 font-display text-ink shadow-2xl"
-    >
-      <p className="text-center text-lg font-semibold">Mama T Kitchen</p>
-      <p className="mb-4 text-center text-xs text-ink/65">Receipt #A4F92C</p>
-      <ul className="space-y-1.5 border-y border-dashed border-ink/30 py-3 text-sm">
-        {rows.map(([name, price]) => (
-          <li key={name} className="flex justify-between">
-            <span>{name}</span>
-            <span className="tabular-nums">{price}</span>
-          </li>
-        ))}
-      </ul>
-      <p className="mt-3 flex justify-between text-base font-semibold">
-        <span>Total</span>
-        <span className="tabular-nums">4,150</span>
-      </p>
-      <p className="mt-1 flex justify-between text-sm text-ink/65">
-        <span>Paid by</span>
-        <span>Transfer</span>
-      </p>
-      <p className="mt-4 text-center text-xs text-ink/65">Thank you for your patronage!</p>
-    </div>
-  )
-}
 
 export default function AuthPage() {
   const [mode, setMode] = useState('login')
@@ -97,30 +62,31 @@ export default function AuthPage() {
       {/* Brand side (desktop only) */}
       <div className="relative hidden flex-col justify-between overflow-hidden bg-brand p-12 text-brand-fg lg:flex">
         <div className="flex items-center gap-2.5">
-          <Logo size={34} className="text-brand-fg" />
+          <Logo size={34} onDark className="text-brand-fg" />
           <span className="font-display text-2xl font-semibold tracking-tight">{APP_NAME}</span>
         </div>
 
-        <div className="relative z-10">
-          <h1 className="max-w-md font-display text-5xl font-semibold leading-[1.05] tracking-tight">
-            Know what you sold, what is left, and what you earned.
+        <div className="relative z-10 pb-28">
+          <h1 className="max-w-lg font-display text-5xl font-semibold leading-[1.05] tracking-tight xl:text-6xl">
+            {TAGLINE}
           </h1>
-          <p className="mt-5 max-w-sm text-lg text-brand-fg/70">
-            Sales, stock, customers and profit for shops, restaurants, cyber cafes and everything in between.
+          <p className="mt-5 max-w-md text-lg text-brand-fg/70">
+            Sales, stock, customers and profit, for shops, entrepreneurs and growing businesses.
           </p>
         </div>
 
-        <div className="absolute -right-6 bottom-10">
-          <ReceiptArt />
-        </div>
+        <GeoBand height={104} className="pointer-events-none absolute inset-x-0 bottom-0 text-brand-fg" />
       </div>
 
       {/* Form side */}
       <div className="flex items-center justify-center px-5 py-10 pt-[calc(2.5rem+env(safe-area-inset-top,0px))]">
         <div className="w-full max-w-sm">
-          <div className="mb-8 flex items-center gap-2.5 lg:hidden">
-            <Logo size={34} className="text-ink" />
-            <span className="font-display text-2xl font-semibold tracking-tight">{APP_NAME}</span>
+          <div className="mb-8 lg:hidden">
+            <div className="flex items-center gap-2.5">
+              <Logo size={34} className="text-ink" />
+              <span className="font-display text-2xl font-semibold tracking-tight">{APP_NAME}</span>
+            </div>
+            <p className="mt-2 text-sm text-ink/65">{TAGLINE}</p>
           </div>
 
           <Segmented

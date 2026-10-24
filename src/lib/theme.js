@@ -1,15 +1,7 @@
 import { useEffect, useState } from 'react'
 
-// ---------- Blue shade per business type ----------
-// The actual colours live in src/index.css under [data-biz='...'].
-const KNOWN = ['retail', 'restaurant', 'cyber_cafe', 'other']
-
-export function applyTheme(type) {
-  document.documentElement.dataset.biz = KNOWN.includes(type) ? type : 'other'
-}
-
 // ---------- Light / dark / follow-the-phone ----------
-const KEY = 'tilly-theme'
+const KEY = 'akanti-theme'
 
 export function getMode() {
   try {

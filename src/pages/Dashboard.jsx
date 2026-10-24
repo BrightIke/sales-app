@@ -242,7 +242,7 @@ function WeekBars({ series, cur }) {
         <div key={i} title={`${d.label}: ${money(d.revenue, cur)}`} className="flex h-full flex-1 flex-col">
           <div className="flex flex-1 items-end">
             <div
-              className={`w-full rounded-t-md ${d.today ? 'bg-accent' : 'bg-white/30'}`}
+              className={`w-full rounded-t-md ${d.today ? 'bg-accent-bright' : 'bg-white/30'}`}
               style={{ height: `${Math.max((d.revenue / max) * 100, d.revenue > 0 ? 4 : 2)}%` }}
             />
           </div>

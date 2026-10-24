@@ -1,11 +1,11 @@
-# Tilly: going live checklist
+# Akanti: going live checklist
 
 ## Where to host (checked October 2026)
 
 - **Cloudflare (recommended).** Free, unlimited bandwidth, 500 builds a month. Commercial use is
   allowed on the free plan according to comparison sources; confirm on Cloudflare's own terms when you sign up.
 - **Vercel.** Fine for testing, but its free "Hobby" plan is **personal, non-commercial use only**
-  (Vercel's own fair-use rules). Selling Tilly to customers needs their paid plan (about $20/month).
+  (Vercel's own fair-use rules). Selling Akanti to customers needs their paid plan (about $20/month).
 
 ## Deploy on Cloudflare
 

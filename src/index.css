@@ -26,6 +26,7 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-fg: var(--accent-fg);
+  --color-accent-bright: var(--accent-bright);
   --color-danger: var(--danger);
   --color-success: var(--success);
   --color-warning: var(--warning);
@@ -38,12 +39,12 @@
 
 :root {
   color-scheme: light;
-  --page: #eff0f3;
+  --page: #eff0f3; /* light gray */
   --surface: #ffffff;
   --surface-2: #f5f6f8;
   --ink: #0b1220;
   --line: rgb(11 18 32 / 0.14);
-  --brand: #0a0e14; /* the black of the sidebar and hero cards */
+  --brand: #0a0e14; /* black: sidebar, hero cards */
   --brand-hover: #1a212c;
   --brand-fg: #ffffff;
   --danger: #b42318;
@@ -52,19 +53,15 @@
   --chart-1: #0a0e14;
   --chart-3: #64748b;
 
-  /* Accent blue. Each business type gets its own shade of blue (see below).
-     Text on the accent is white in light mode. */
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
+  /* Cobalt blue, with white text on it */
+  --accent: #0047ab;
+  --accent-hover: #003a8c;
   --accent-fg: #ffffff;
+  /* A brighter cobalt for use ON black surfaces, where plain cobalt is too dim */
+  --accent-bright: #4f86f0;
   --chart-accent: var(--accent);
   --ring: var(--accent);
 }
-
-/* One shade of blue per business type, set by src/lib/theme.js */
-:root[data-biz='restaurant'] { --accent: #0369a1; --accent-hover: #075985; }
-:root[data-biz='cyber_cafe'] { --accent: #3b5bdb; --accent-hover: #2f4ac0; }
-:root[data-biz='other'] { --accent: #64748b; --accent-hover: #526077; }
 
 :root.dark {
   color-scheme: dark;
@@ -73,7 +70,7 @@
   --surface-2: #19202a;
   --ink: #e8ecf2;
   --line: rgb(232 236 242 / 0.14);
-  --brand: #1b2740; /* deep navy-gray for the sidebar and hero cards */
+  --brand: #1b2740; /* deep navy-gray: sidebar, hero cards */
   --brand-hover: #243252;
   --brand-fg: #f2f5fa;
   --danger: #f97066;
@@ -81,13 +78,11 @@
   --warning: #fbbf24;
   --chart-1: #cbd5e1;
   --chart-3: #94a3b8;
-  --accent: #6ba0ff;
+  --accent: #6b9bff; /* lighter cobalt, with near-black text */
   --accent-hover: #8db6ff;
-  --accent-fg: #0a0e14; /* dark text on the lighter blue */
+  --accent-fg: #0a0e14;
+  --accent-bright: var(--accent);
 }
-:root.dark[data-biz='restaurant'] { --accent: #38bdf8; --accent-hover: #7dd3fc; }
-:root.dark[data-biz='cyber_cafe'] { --accent: #8b9bff; --accent-hover: #a5b1ff; }
-:root.dark[data-biz='other'] { --accent: #94a3b8; --accent-hover: #cbd5e1; }
 
 /* ------------------------------------------------------------------
    BASE: typography + making it feel like an installed phone app

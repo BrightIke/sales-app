@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../AuthContext'
 import { money } from '../lib/format'
 import { Field } from '../components/ui'
+import CostBuilder from '../components/CostBuilder'
 
 const typeLabels = {
   product: 'Product',
@@ -25,9 +26,10 @@ const empty = {
 const field =
   'w-full rounded-xl border border-ink/55 bg-surface px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent'
 
-export default function Items() {
+export default function Items({ go }) {
   const { business, profile } = useAuth()
   const canManage = profile?.role !== 'cashier'
+  const [costing, setCosting] = useState(null)
 
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
@@ -40,11 +42,11 @@ export default function Items() {
   async function load() {
     const { data, error } = await supabase
       .from('items')
-      .select('*, item_costs(cost_price)')
+      .select('*, item_costs(cost_price, cost_mode)')
       .eq('is_active', true)
       .order('name')
     if (error) setError(error.message)
-    else setItems(data.map((x) => ({ ...x, cost_price: x.item_costs?.cost_price ?? 0 })))
+    else setItems(data.map((x) => ({ ...x, cost_price: x.item_costs?.cost_price ?? 0, cost_mode: x.item_costs?.cost_mode ?? 'manual' })))
     setLoading(false)
   }
 
@@ -127,6 +129,8 @@ export default function Items() {
   const isTimed = form?.item_type === 'timed_service'
   const isProduct = form?.item_type === 'product'
 
+  const editingBuilt = items.find((i) => i.id === editingId)?.cost_mode === 'built'
+
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -162,8 +166,9 @@ export default function Items() {
             </select></Field>
             <Field label="Category" hint="Optional"><input className={field} value={form.category} onChange={set('category')} /></Field>
             <Field label="Barcode" hint="Optional"><input className={field} value={form.barcode} onChange={set('barcode')} /></Field>
-            <Field label="Cost price" hint="What it costs you"><input
+            <Field label="Cost price" hint={editingBuilt ? 'Worked out from its costs' : 'What it costs you'}><input
               className={field}
+              disabled={editingBuilt}
               type="number"
               min="0"
               step="0.01"
@@ -255,7 +260,12 @@ export default function Items() {
                       {i.category && <span className="block text-ink/65">{i.category}</span>}
                     </td>
                     <td className="px-4 py-3">{typeLabels[i.item_type]}</td>
-                    {canManage && <td className="px-4 py-3">{money(i.cost_price, business.currency)}</td>}
+                    {canManage && (
+                      <td className="px-4 py-3">
+                        {money(i.cost_price, business.currency)}
+                        {i.cost_mode === 'built' && <span className="block text-xs text-ink/65">from costs</span>}
+                      </td>
+                    )}
                     <td className="px-4 py-3">
                       {money(i.selling_price, business.currency)}
                       {i.item_type === 'timed_service' && ' /hr'}
@@ -277,6 +287,9 @@ export default function Items() {
                     </td>
                     {canManage && (
                       <td className="whitespace-nowrap px-4 py-3 text-right">
+                        <button onClick={() => setCosting(i)} className="mr-3 underline">
+                          Costing
+                        </button>
                         <button onClick={() => openEdit(i)} className="mr-3 underline">
                           Edit
                         </button>
@@ -291,6 +304,17 @@ export default function Items() {
             </tbody>
           </table>
         </div>
+      )}
+      {costing && (
+        <CostBuilder
+          item={costing}
+          go={go}
+          onClose={() => setCosting(null)}
+          onSaved={() => {
+            setCosting(null)
+            load()
+          }}
+        />
       )}
     </div>
   )
